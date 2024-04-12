@@ -37,46 +37,55 @@ class _DrinkDetailState extends State<DrinkDetail> {
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
       body: Center(
-        child: Column(
-          children: [
-            Image(
-              image: NetworkImage(
-                detail?.strDrinkThumb ?? 'https://media.tenor.com/On7kvXhzml4AAAAi/loading-gif.gif',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Image(
+                image: NetworkImage(
+                  detail?.strDrinkThumb ?? 'https://media.tenor.com/On7kvXhzml4AAAAi/loading-gif.gif',
+                ),
+                width: 430,
+                height: 430,
               ),
-              width: 430,
-              height: 430,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Text(
-                    detail?.strDrink ?? 'Cargando datos..',
-                    style: const TextStyle(
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      detail?.strDrink ?? 'Cargando datos..',
+                      style: const TextStyle(
+                        fontSize: 38,
+                        fontWeight: FontWeight.bold
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8,),
-                  descriptionCard('Ingredientes', Icons.food_bank, () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => IngredientsDetail(drink: widget.drink))
-                    );
-                  }),
-                  descriptionCard('Instrucciones', Icons.list_alt, () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => InstructionsDetail(drink: widget.drink))
-                    );
-                  }),
-                  descriptionCard('Vaso', Icons.liquor, () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => GlassDetail(drink: widget.drink))
-                    );
-                  })
-                ],
-              ),
-            )
-          ],
+                    const SizedBox(height: 8,),
+                    descriptionCard('Instrucciones', Icons.list_alt, () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => InstructionsDetail(drink: widget.drink))
+                      );
+                    }),
+                    Text(detail?.strInstructions ?? 'Cargando..', style: const TextStyle(
+                      fontSize: 16
+                    ),),
+                    const SizedBox(height: 16,),
+                    descriptionCard('Servir en', Icons.liquor, () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => GlassDetail(drink: widget.drink))
+                      );
+                    }),
+                    Text(detail?.strGlass ?? 'Cargando..', style: const TextStyle(
+                      fontSize: 16
+                    ),),
+                    descriptionCard('Ingredientes', Icons.food_bank, () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => IngredientsDetail(drink: widget.drink))
+                      );
+                    }),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -84,23 +93,24 @@ class _DrinkDetailState extends State<DrinkDetail> {
 
   InkWell descriptionCard(String description, IconData icono, Function() onTap) {
     return InkWell(
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Icon(icono),
-              const SizedBox(width: 8,),
-              Expanded(child: Text(description, textAlign: TextAlign.center,)),
-              const SizedBox(width: 8,),
-              const Icon(Icons.arrow_forward_ios)
-            ],
-          ),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icono),
+            Expanded(child: Text(
+                description,
+                style: const TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              )
+            ),
+            const SizedBox(width: 8,),
+            const Icon(Icons.arrow_forward_ios)
+          ],
         ),
       ),
-      onTap: onTap,
     );
   }
 }

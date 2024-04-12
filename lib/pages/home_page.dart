@@ -52,14 +52,14 @@ class _HomePageState extends State<HomePage> {
                 ListItem(nombre: 'Tipos', icono: Icons.liquor, selected: lista == 'a', onTap: () => onTap('a'),),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Expanded(
               child: FutureBuilder(
                 future: service.getList(lista),
                 builder: (context, AsyncSnapshot<List<String>?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+                  if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
                   final data = snapshot.data ?? [];
                   return SingleChildScrollView(
                     child: Column(
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => CategoryPage(
-                                type: lista, 
+                                type: lista,
                                 option: e
                               ))
                             );
@@ -114,7 +114,7 @@ class ListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         decoration: BoxDecoration(
           color: !selected ? Colors.blue.shade200 : Colors.blue,
           borderRadius: BorderRadius.circular(12)
@@ -123,10 +123,10 @@ class ListItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icono, color: Colors.white,),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
-            Text(nombre, style: TextStyle(
+            Text(nombre, style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.white

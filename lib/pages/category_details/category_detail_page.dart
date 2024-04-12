@@ -27,7 +27,7 @@ class CategoryPage extends StatelessWidget {
       body: FutureBuilder(
         future: service.getDrinkBy(type, option),
         builder: (context, AsyncSnapshot<List<Drink>?> snapshot) {
-          final List<Drink>? data = snapshot.data ?? [];
+          final List<Drink> data = snapshot.data ?? [];
           return ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: data?.length ?? 1,

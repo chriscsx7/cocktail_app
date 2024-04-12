@@ -27,12 +27,12 @@ class CategoryDrink extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
-                child: Text(titulo ?? '', style: TextStyle(
+                child: Text(titulo ?? '', style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold
                 ),),
               ),
-              Icon(Icons.chevron_right, size: 48),
+              const Icon(Icons.chevron_right, size: 48),
             ],
           ),
         ),
