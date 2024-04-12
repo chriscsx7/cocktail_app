@@ -1,6 +1,5 @@
 import 'package:cocktail_app/pages/category_details/category_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../services/api_service.dart';
 import 'widgets/category_drink.dart';
 
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final service = ApiService();
 
-    const url = 'https://scontent.fcyw4-1.fna.fbcdn.net/v/t39.30808-6/432787881_308814988878514_2230215282488264154_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFl7sIkz4oL9sWzjaEi_9UMfrRSBiS0SX9-tFIGJLRJf6jiD6s2fico82RQU6m3spzVPnO2GwtQo9W_JHHY2IaN&_nc_ohc=mtBoFB86bzcAb6dVdqJ&_nc_ht=scontent.fcyw4-1.fna&oh=00_AfDBAt8NdJnDxmAq12sEhErEdql7nqFu83mtmmsrVp7jtQ&oe=661426A0';
+    const url = 'https://scontent.fcyw4-1.fna.fbcdn.net/v/t39.30808-6/432787881_308814988878514_2230215282488264154_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFl7sIkz4oL9sWzjaEi_9UMfrRSBiS0SX9-tFIGJLRJf6jiD6s2fico82RQU6m3spzVPnO2GwtQo9W_JHHY2IaN&_nc_ohc=ISGNIyXvayMAb6FPfIk&_nc_ht=scontent.fcyw4-1.fna&oh=00_AfDufyeqb9_Bj_2IZpsywidk8LxWMwMB8QbSEYaDYWv3OA&oe=661EB2A0';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cocteleria', style: TextStyle(
