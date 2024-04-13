@@ -30,9 +30,9 @@ class CategoryPage extends StatelessWidget {
           final List<Drink> data = snapshot.data ?? [];
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: data?.length ?? 1,
+            itemCount: data.length,
             itemBuilder: (context, index) {
-              final Drink drink = data![index];
+              final Drink drink = data[index];
               return DrinkCard(drink: drink, option: option);
             },
           );
@@ -111,7 +111,7 @@ class DrinkCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  Text(option, style: TextStyle(fontSize: 16)),
+                  Text(option, style: const TextStyle(fontSize: 16)),
                     const SizedBox(height: 24),
                   ],
                 ),

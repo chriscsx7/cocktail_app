@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cocktail_app/models/drink_detail_model.dart';
 import 'package:cocktail_app/models/drink_model.dart';
+import 'package:cocktail_app/models/ingredient_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -45,6 +46,22 @@ class ApiService {
       }
     }
     return listaBebidas;
+  }
+
+  Future<Ingredient?> getIngredientBy(String ingredient) async {
+    var response = await http.get(Uri.parse('$baseUri/search.php?i=$ingredient'));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+      final ingredient = jsonResponse['ingredients'] as List?;
+      if(ingredient == null || ingredient.isEmpty) return null;
+      try {
+        return Ingredient.fromJson(ingredient.first);
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
   }
 
   Future<DrinkDetails?> getDrinkDetails(String id) async {

@@ -1,8 +1,6 @@
 import 'package:cocktail_app/models/drink_detail_model.dart';
 import 'package:cocktail_app/models/drink_model.dart';
-import 'package:cocktail_app/pages/category_details/glass_detail_page.dart';
-import 'package:cocktail_app/pages/category_details/ingredients_detail_page.dart';
-import 'package:cocktail_app/pages/category_details/instructions_detail_page.dart';
+import 'package:cocktail_app/pages/widgets/ingredient_widget.dart';
 import 'package:cocktail_app/services/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -16,16 +14,31 @@ class DrinkDetail extends StatefulWidget {
 
 class _DrinkDetailState extends State<DrinkDetail> {
   DrinkDetails? detail;
+  ApiService service = ApiService();
 
   @override
   void initState() {
     super.initState();
-    ApiService service = ApiService();
     service.getDrinkDetails(widget.drink.id).then((value){
       setState(() {
         detail = value;
       });
     });
+  }
+
+  Future<List<String>?> fetchData1() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return service.getDrinkIngredients(widget.drink.id);
+  }
+
+  Future<List<String>?> fetchData2() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return service.getDrinkIngredientsMeasure(widget.drink.id);
+  }
+
+  Future<List> combinedFuture() async {
+    List<Future> futures = [fetchData1(), fetchData2()];
+    return Future.wait(futures);
   }
 
   @override
@@ -59,28 +72,56 @@ class _DrinkDetailState extends State<DrinkDetail> {
                       ),
                     ),
                     const SizedBox(height: 8,),
-                    descriptionCard('Instrucciones', Icons.list_alt, () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => InstructionsDetail(drink: widget.drink))
-                      );
-                    }),
-                    Text(detail?.strInstructions ?? 'Cargando..', style: const TextStyle(
-                      fontSize: 16
-                    ),),
+                    const Divider(color: Colors.black45,),
+                    description('Ingredientes', Icons.food_bank),
+                    FutureBuilder(
+                      future: combinedFuture(),
+                      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator()
+                        );
+                        }
+
+                        List<String> data1 = snapshot.data![0];
+                        List<String> data2 = snapshot.data![1];
+
+                        return SizedBox(
+                          height: 160,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.all(16),
+                            itemCount: data1.length,
+                            itemBuilder: (context, index) {
+                              final String ingredient = data1[index];
+                              final String medida = data2[index];
+                              return IngredientWidget(
+                                image: 'https://www.thecocktaildb.com/images/ingredients/$ingredient-Small.png',
+                                ingredient: ingredient,
+                                measure: medida
+                              );
+                            }
+                          ),
+                        );
+                      }
+                    ),
+                    const Divider(color: Colors.black45,),
+                    description('Instrucciones', Icons.list_alt),
                     const SizedBox(height: 16,),
-                    descriptionCard('Servir en', Icons.liquor, () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => GlassDetail(drink: widget.drink))
-                      );
-                    }),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 12, 0),
+                      child: Text(detail?.strInstructions ?? 'Cargando..', style: const TextStyle(
+                        fontSize: 16
+                      ),),
+                    ),
+                    const SizedBox(height: 16,),
+                    const Divider(color: Colors.black45,),
+                    description('Servir en', Icons.liquor),
+                    const SizedBox(height: 16,),
                     Text(detail?.strGlass ?? 'Cargando..', style: const TextStyle(
                       fontSize: 16
                     ),),
-                    descriptionCard('Ingredientes', Icons.food_bank, () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => IngredientsDetail(drink: widget.drink))
-                      );
-                    }),
+                    const SizedBox(height: 32,),
                   ],
                 ),
               )
@@ -91,23 +132,21 @@ class _DrinkDetailState extends State<DrinkDetail> {
     );
   }
 
-  InkWell descriptionCard(String description, IconData icono, Function() onTap) {
+  InkWell description(String description, IconData icono) {
     return InkWell(
-      onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icono),
-            Expanded(child: Text(
+            const SizedBox(width: 20),
+            Text(
                 description,
                 style: const TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
-              )
-            ),
-            const SizedBox(width: 8,),
-            const Icon(Icons.arrow_forward_ios)
+              ),
+            const SizedBox(width: 20)
           ],
         ),
       ),
