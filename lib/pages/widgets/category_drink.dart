@@ -4,18 +4,15 @@ class CategoryDrink extends StatelessWidget {
   const CategoryDrink({
     super.key,
     this.titulo,
-    required this.color,
     this.onTap
   });
 
   final String? titulo;
-  final Color color;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: color,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12)
       ),

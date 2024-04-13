@@ -31,11 +31,12 @@ class _HomePageState extends State<HomePage> {
           fontWeight: FontWeight.bold
         ),),
         centerTitle: false,
-        leading: const CircleAvatar(
-          radius: 50.0,
-          backgroundImage: NetworkImage(url
-          )
-        ),
+        actions: const [
+          CircleAvatar(
+            radius: 40.0,
+            backgroundImage: NetworkImage(url)
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +67,6 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: data.map((e) => CategoryDrink(
                           titulo: e,
-                          color: Colors.lightBlueAccent.shade100,
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => CategoryPage(
