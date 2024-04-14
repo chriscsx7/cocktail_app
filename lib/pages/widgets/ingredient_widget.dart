@@ -20,6 +20,7 @@ class IngredientWidget extends StatelessWidget {
         width: 190,
         height: 125,
         child: Card(
+          color: const Color(0xff217373),
           margin: const EdgeInsets.all(8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           elevation: 8,
@@ -42,10 +43,10 @@ class IngredientWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(child: Text(ingredient, style: const TextStyle(fontSize: 18))),
+                          Expanded(child: Text(ingredient, style: const TextStyle(fontSize: 18, color: Colors.white))),
                         ],
                       ),
-                      Text(measure, style: const TextStyle(fontSize: 14)),
+                      Text(measure, style: const TextStyle(fontSize: 14, color: Colors.greenAccent)),
                     ],
                   ),
                 )

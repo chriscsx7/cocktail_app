@@ -28,8 +28,9 @@ class _IngredientDetailState extends State<IngredientDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0,
+        backgroundColor: const Color(0xff173540),
+        title: const Text('Ingrediente', style: TextStyle(color: Colors.greenAccent),),
+        elevation: 4,
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
       body: Center(
@@ -52,36 +53,45 @@ class _IngredientDetailState extends State<IngredientDetail> {
                     Text(
                       detail?.strIngredient ?? 'Cargando datos..',
                       style: const TextStyle(
+                        color: Color(0xff217373),
                         fontSize: 38,
                         fontWeight: FontWeight.bold
                       ),
                     ),
                     const SizedBox(height: 8,),
-                    const Divider(color: Colors.black,),
-                    const Text('Descripción', style: TextStyle(fontSize: 18),),
-                    const SizedBox(height: 16,),
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
+                    _label('Descripción'),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(24, 0, 12, 0),
                       child: Text(detail?.strDescription ?? 'Cargando..', style: const TextStyle(
                         fontSize: 16
                       ),),
                     ),
-                    const Divider(color: Colors.black,),
-                    const Text('Tipo', style: TextStyle(fontSize: 18),),
-                    const SizedBox(height: 16,),
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
+                    _label('Tipo'),
                     Text(detail?.strType ?? 'Cargando..', style: const TextStyle(
                       fontSize: 16
                     ),),
-                    const Divider(color: Colors.black,),
-                    const Text('Alcohol', style: TextStyle(fontSize: 18),),
-                    const SizedBox(height: 16,),
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
+                    _label('Alcohol'),
                     Text(detail?.strAlcohol ?? 'Cargando..', style: const TextStyle(
                       fontSize: 16
                     ),),
-                    const Divider(color: Colors.black,),
-                    const Text('Porcentaje', style: TextStyle(fontSize: 18),),
-                    const SizedBox(height: 16,),
-                    Text('%${detail?.strAbv ?? 'Cargando..'}', style: const TextStyle(
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
+                    _label('Porcentaje'),
+                    Text('% ${detail?.strAbv ?? 'Cargando..'}', style: const TextStyle(
                       fontSize: 16
                     ),),
                     const SizedBox(height: 32,),
@@ -92,6 +102,24 @@ class _IngredientDetailState extends State<IngredientDetail> {
           ),
         ),
       ),
+    );
+  }
+
+  Row _label(String label) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            label, style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff217373)
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

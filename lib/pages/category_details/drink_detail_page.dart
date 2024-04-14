@@ -45,8 +45,9 @@ class _DrinkDetailState extends State<DrinkDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0,
+        backgroundColor: const Color(0xff173540),
+        title: const Text('Bebida', style: TextStyle(color: Colors.greenAccent),),
+        elevation: 4,
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
       body: Center(
@@ -67,12 +68,16 @@ class _DrinkDetailState extends State<DrinkDetail> {
                     Text(
                       detail?.strDrink ?? 'Cargando datos..',
                       style: const TextStyle(
+                        color: Color(0xff217373),
                         fontSize: 38,
                         fontWeight: FontWeight.bold
                       ),
                     ),
                     const SizedBox(height: 8,),
-                    const Divider(color: Colors.black45,),
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
                     description('Ingredientes', Icons.food_bank),
                     FutureBuilder(
                       future: combinedFuture(),
@@ -105,7 +110,10 @@ class _DrinkDetailState extends State<DrinkDetail> {
                         );
                       }
                     ),
-                    const Divider(color: Colors.black45,),
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
                     description('Instrucciones', Icons.list_alt),
                     const SizedBox(height: 16,),
                     Padding(
@@ -115,7 +123,10 @@ class _DrinkDetailState extends State<DrinkDetail> {
                       ),),
                     ),
                     const SizedBox(height: 16,),
-                    const Divider(color: Colors.black45,),
+                    const Divider(
+                      color: Color(0xff173540),
+                      thickness: 2,
+                    ),
                     description('Servir en', Icons.liquor),
                     const SizedBox(height: 16,),
                     Text(detail?.strGlass ?? 'Cargando..', style: const TextStyle(
@@ -139,11 +150,15 @@ class _DrinkDetailState extends State<DrinkDetail> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icono),
+            Icon(icono, color: const Color(0xff161F30),),
             const SizedBox(width: 20),
             Text(
                 description,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff217373)
+                ),
                 textAlign: TextAlign.center,
               ),
             const SizedBox(width: 20)

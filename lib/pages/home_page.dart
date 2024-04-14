@@ -23,10 +23,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final service = ApiService();
 
-    const url = 'https://scontent.fcyw4-1.fna.fbcdn.net/v/t39.30808-6/432787881_308814988878514_2230215282488264154_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFl7sIkz4oL9sWzjaEi_9UMfrRSBiS0SX9-tFIGJLRJf6jiD6s2fico82RQU6m3spzVPnO2GwtQo9W_JHHY2IaN&_nc_ohc=ISGNIyXvayMAb6FPfIk&_nc_ht=scontent.fcyw4-1.fna&oh=00_AfDufyeqb9_Bj_2IZpsywidk8LxWMwMB8QbSEYaDYWv3OA&oe=661EB2A0';
+    const url = 'https://images.immediate.co.uk/production/volatile/sites/30/2020/01/retro-cocktails-b12b00d.jpg?quality=90&webp=true&resize=600,545';
+    // const url2 = 'https://scontent.fcyw4-1.fna.fbcdn.net/v/t39.30808-6/432787881_308814988878514_2230215282488264154_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFl7sIkz4oL9sWzjaEi_9UMfrRSBiS0SX9-tFIGJLRJf6jiD6s2fico82RQU6m3spzVPnO2GwtQo9W_JHHY2IaN&_nc_ohc=ISGNIyXvayMAb6FPfIk&_nc_ht=scontent.fcyw4-1.fna&oh=00_AfDufyeqb9_Bj_2IZpsywidk8LxWMwMB8QbSEYaDYWv3OA&oe=661EB2A0';
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xff173540),
+        elevation: 4,
         title: const Text('Cocteleria', style: TextStyle(
+          color: Colors.greenAccent,
           fontSize: 32,
           fontWeight: FontWeight.bold
         ),),
@@ -113,25 +117,27 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        decoration: BoxDecoration(
-          color: !selected ? Colors.blue.shade200 : Colors.blue,
-          borderRadius: BorderRadius.circular(12)
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icono, color: Colors.white,),
-            const SizedBox(
-              width: 8,
+      child: Card(
+        color: !selected ? const Color(0xff217373) : const Color(0xff173540),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          width: 160,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icono, color: Colors.greenAccent,),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(nombre, style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),)
+              ],
             ),
-            Text(nombre, style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.white
-            ),)
-          ],
+          ),
         ),
       ),
     );

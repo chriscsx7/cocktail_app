@@ -19,9 +19,9 @@ class CategoryPage extends StatelessWidget {
 
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0,
-        title: Text(option),
+        elevation: 4,
+        backgroundColor: const Color(0xff173540),
+        title: Text(option, style: const TextStyle(color: Colors.greenAccent),),
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
       body: FutureBuilder(
@@ -55,6 +55,7 @@ class DrinkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+    color: const Color(0xff217373),
     elevation: 4,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12)
@@ -83,35 +84,28 @@ class DrinkCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Align(
-                  //   alignment: Alignment.topRight,
-                  //   child: InkWell(
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: Icon(Icons.more_vert),
-                  //     ),
-                  //     onTap: () {
-
-                  //     },
-                  //   ),
-                  // ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(child: Text(drink.name, style: const TextStyle(fontSize: 24))),
+                      Expanded(child: Text(drink.name, style: const TextStyle(
+                            fontSize: 24,
+                            color: Colors.white
+                          )
+                        )
+                      ),
                       IconButton(
                         alignment: Alignment.topCenter,
                         padding: EdgeInsets.zero,
                         visualDensity: VisualDensity.compact,
                         // ignore: dead_code
-                        icon: Icon(true ? Icons.star : Icons.star_border, color: Theme.of(context).primaryColor),
+                        icon: Icon(true ? Icons.star : Icons.star_border, color: Theme.of(context).secondaryHeaderColor),
                         onPressed: () {
 
                         },
                       )
                     ],
                   ),
-                  Text(option, style: const TextStyle(fontSize: 16)),
+                  Text(option, style: const TextStyle(fontSize: 16, color: Colors.greenAccent)),
                     const SizedBox(height: 24),
                   ],
                 ),
