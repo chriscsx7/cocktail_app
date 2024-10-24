@@ -12,6 +12,7 @@ class IngredientDetail extends StatefulWidget {
 
 class _IngredientDetailState extends State<IngredientDetail> {
   Ingredient? detail;
+  String noData = "No hay datos";
   ApiService service = ApiService();
 
   @override
@@ -26,10 +27,17 @@ class _IngredientDetailState extends State<IngredientDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return detail == null ?
+    const Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    ) :
+    Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff173540),
-        title: const Text('Ingrediente', style: TextStyle(color: Colors.greenAccent),),
+        title: const Text('Ingrediente', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),),
         elevation: 4,
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
@@ -49,13 +57,13 @@ class _IngredientDetailState extends State<IngredientDetail> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  children: [
+                    children: [
                     Text(
-                      detail?.strIngredient ?? 'Cargando datos..',
+                      detail?.strIngredient ?? noData,
                       style: const TextStyle(
-                        color: Color(0xff217373),
-                        fontSize: 38,
-                        fontWeight: FontWeight.bold
+                      color: Color(0xff217373),
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold
                       ),
                     ),
                     const SizedBox(height: 8,),
@@ -66,8 +74,8 @@ class _IngredientDetailState extends State<IngredientDetail> {
                     _label('Descripción'),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(24, 0, 12, 0),
-                      child: Text(detail?.strDescription ?? 'Cargando..', style: const TextStyle(
-                        fontSize: 16
+                      child: Text(detail?.strDescription ?? noData, style: const TextStyle(
+                      fontSize: 16
                       ),),
                     ),
                     const Divider(
@@ -75,7 +83,7 @@ class _IngredientDetailState extends State<IngredientDetail> {
                       thickness: 2,
                     ),
                     _label('Tipo'),
-                    Text(detail?.strType ?? 'Cargando..', style: const TextStyle(
+                    Text(detail?.strType ?? noData, style: const TextStyle(
                       fontSize: 16
                     ),),
                     const Divider(
@@ -83,17 +91,18 @@ class _IngredientDetailState extends State<IngredientDetail> {
                       thickness: 2,
                     ),
                     _label('Alcohol'),
-                    Text(detail?.strAlcohol ?? 'Cargando..', style: const TextStyle(
+                    Text(detail?.strAlcohol ?? noData, style: const TextStyle(
                       fontSize: 16
                     ),),
                     const Divider(
                       color: Color(0xff173540),
                       thickness: 2,
                     ),
-                    _label('Porcentaje'),
-                    Text('% ${detail?.strAbv ?? 'Cargando..'}', style: const TextStyle(
-                      fontSize: 16
-                    ),),
+                    if (detail?.strAlcohol != 'No') _label('Porcentaje'),
+                    if(detail?.strAlcohol != 'No')
+                      detail?.strAbv == noData || detail?.strAbv == null ?
+                      Text(noData, style: const TextStyle(fontSize: 16),) :
+                      Text('% ${detail?.strAbv}', style: const TextStyle(fontSize: 16),),
                     const SizedBox(height: 32,),
                   ],
                 ),

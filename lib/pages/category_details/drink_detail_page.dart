@@ -14,31 +14,28 @@ class DrinkDetail extends StatefulWidget {
 
 class _DrinkDetailState extends State<DrinkDetail> {
   DrinkDetails? detail;
+  List<String>? ingredients;
+  List<String>? measures;
+  bool showIngredients = false;
+  bool showInstructions = false;
+  bool showGlass = false;
   ApiService service = ApiService();
 
   @override
   void initState() {
     super.initState();
-    service.getDrinkDetails(widget.drink.id).then((value){
-      setState(() {
-        detail = value;
-      });
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final drinkDetails = await service.getDrinkDetails(widget.drink.id);
+    final ingredientsData = await service.getDrinkIngredients(widget.drink.id);
+    final measuresData = await service.getDrinkIngredientsMeasure(widget.drink.id);
+    setState(() {
+      detail = drinkDetails;
+      ingredients = ingredientsData;
+      measures = measuresData;
     });
-  }
-
-  Future<List<String>?> fetchData1() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return service.getDrinkIngredients(widget.drink.id);
-  }
-
-  Future<List<String>?> fetchData2() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return service.getDrinkIngredientsMeasure(widget.drink.id);
-  }
-
-  Future<List> combinedFuture() async {
-    List<Future> futures = [fetchData1(), fetchData2()];
-    return Future.wait(futures);
   }
 
   @override
@@ -46,122 +43,114 @@ class _DrinkDetailState extends State<DrinkDetail> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff173540),
-        title: const Text('Bebida', style: TextStyle(color: Colors.greenAccent),),
+        title: const Text('Bebida', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),),
         elevation: 4,
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image(
-                image: NetworkImage(
-                  detail?.strDrinkThumb ?? 'https://media.tenor.com/On7kvXhzml4AAAAi/loading-gif.gif',
-                ),
-                width: 430,
-                height: 430,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image(
+              image: NetworkImage(
+                detail?.strDrinkThumb ?? 'https://media.tenor.com/On7kvXhzml4AAAAi/loading-gif.gif',
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text(
-                      detail?.strDrink ?? 'Cargando datos..',
-                      style: const TextStyle(
-                        color: Color(0xff217373),
-                        fontSize: 38,
-                        fontWeight: FontWeight.bold
+              width: 430,
+              height: 430,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    detail?.strDrink ?? 'Cargando datos..',
+                    style: const TextStyle(
+                      color: Color(0xff217373),
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  const SizedBox(height: 8,),
+                  const Divider(
+                    color: Color(0xff173540),
+                    thickness: 2,
+                  ),
+                  description('Ingredientes', Icons.food_bank, showIngredients, () {setState(() {showIngredients = !showIngredients;});}),
+                  if (showIngredients && ingredients != null && measures != null)
+                    SizedBox(
+                      height: 160,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.all(16),
+                        itemCount: ingredients!.length,
+                        itemBuilder: (context, index) {
+                          final String ingredient = ingredients![index];
+                          final String measure = measures![index];
+                          return IngredientWidget(
+                            image: 'https://www.thecocktaildb.com/images/ingredients/$ingredient-Small.png',
+                            ingredient: ingredient,
+                            measure: measure
+                          );
+                        }
                       ),
                     ),
-                    const SizedBox(height: 8,),
-                    const Divider(
-                      color: Color(0xff173540),
-                      thickness: 2,
-                    ),
-                    description('Ingredientes', Icons.food_bank),
-                    FutureBuilder(
-                      future: combinedFuture(),
-                      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator()
-                        );
-                        }
-
-                        List<String> data1 = snapshot.data![0];
-                        List<String> data2 = snapshot.data![1];
-
-                        return SizedBox(
-                          height: 160,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.all(16),
-                            itemCount: data1.length,
-                            itemBuilder: (context, index) {
-                              final String ingredient = data1[index];
-                              final String medida = data2[index];
-                              return IngredientWidget(
-                                image: 'https://www.thecocktaildb.com/images/ingredients/$ingredient-Small.png',
-                                ingredient: ingredient,
-                                measure: medida
-                              );
-                            }
-                          ),
-                        );
-                      }
-                    ),
-                    const Divider(
-                      color: Color(0xff173540),
-                      thickness: 2,
-                    ),
-                    description('Instrucciones', Icons.list_alt),
+                  const Divider(
+                    color: Color(0xff173540),
+                    thickness: 2,
+                  ),
+                  description('Instrucciones', Icons.list_alt, showInstructions, () {setState(() {showInstructions = !showInstructions;});}),
+                  if (showInstructions)
                     const SizedBox(height: 16,),
+                  if (showInstructions)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(24, 0, 12, 0),
                       child: Text(detail?.strInstructions ?? 'Cargando..', style: const TextStyle(
                         fontSize: 16
                       ),),
                     ),
+                  if (showInstructions)
                     const SizedBox(height: 16,),
-                    const Divider(
-                      color: Color(0xff173540),
-                      thickness: 2,
-                    ),
-                    description('Servir en', Icons.liquor),
-                    const SizedBox(height: 16,),
+                  const Divider(
+                    color: Color(0xff173540),
+                    thickness: 2,
+                  ),
+                  description('Servir en', Icons.liquor, showGlass, () {setState(() {showGlass = !showGlass;});}),
+                  const SizedBox(height: 16,),
+                  if (showGlass)
                     Text(detail?.strGlass ?? 'Cargando..', style: const TextStyle(
                       fontSize: 16
                     ),),
+                  if (showGlass)
                     const SizedBox(height: 32,),
-                  ],
-                ),
-              )
-            ],
-          ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
   }
 
-  InkWell description(String description, IconData icono) {
+  InkWell description(String description, IconData icono, bool isExpanded, onTap) {
     return InkWell(
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icono, color: const Color(0xff161F30),),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+            Icon(icono, color: const Color(0xff161F30)),
             const SizedBox(width: 20),
             Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff217373)
-                ),
-                textAlign: TextAlign.center,
+              description,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff217373),
               ),
-            const SizedBox(width: 20)
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(width: 20),
+            Icon(isExpanded ? Icons.expand_more : Icons.chevron_right, color: const Color(0xff161F30)),
           ],
         ),
       ),

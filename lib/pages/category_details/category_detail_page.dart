@@ -21,7 +21,7 @@ class CategoryPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 4,
         backgroundColor: const Color(0xff173540),
-        title: Text(option, style: const TextStyle(color: Colors.greenAccent),),
+        title: Text(option, style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),),
         foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
       body: FutureBuilder(
